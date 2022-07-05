@@ -79,6 +79,6 @@ class FilmControllerTest {
         mockMvc.perform(post("/films")
                 .content(gson.toJson(film))
                 .contentType(MediaType.APPLICATION_JSON));
-        mockMvc.perform(get("films")).andExpect(status().isOk());
+        mockMvc.perform(get("/films")).andExpect(status().isOk());
     }
 }
