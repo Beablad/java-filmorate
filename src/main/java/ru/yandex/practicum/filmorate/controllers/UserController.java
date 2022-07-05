@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.LocalDateTimeAdapter;
+import ru.yandex.practicum.filmorate.exceptions.IllegalIdException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -41,9 +42,6 @@ public class UserController {
             user.setId(getUserId());
             userList.put(user.getId(), user);
             log.info("Пользователь добавлен");
-        } else {
-            log.warn("Ошибка валидации");
-            throw new ValidationException();
         }
         return user;
     }
@@ -57,9 +55,6 @@ public class UserController {
         } else if (validate(user)) {
             userList.put(user.getId(), user);
             log.info("Пользователь добавлен");
-        } else {
-            log.warn("Ошибка валидации");
-            throw new ValidationException();
         }
         return user;
     }
@@ -69,11 +64,13 @@ public class UserController {
         boolean checkBirthday = user.getBirthday().isBefore(LocalDate.now());
         boolean checkLogin = !user.getLogin().contains(" ") && !user.getLogin().isBlank();
         if (user.getId() < 0) {
-            return false;
+            log.warn("Ошибка валидации");
+            throw new IllegalIdException();
         } else if (checkEmail && checkBirthday && checkLogin) {
             return true;
         } else {
-            return false;
+            log.warn("Ошибка валидации");
+            throw new ValidationException();
         }
     }
 }

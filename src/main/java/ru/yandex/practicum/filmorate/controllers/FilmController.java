@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.IllegalIdException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -38,9 +39,6 @@ public class FilmController {
             film.setId(getFilmId());
             filmList.put(film.getId(), film);
             log.info("Фильм добавлен");
-        } else {
-            log.warn("Ошибка валидации");
-            throw new ValidationException();
         }
         return film;
     }
@@ -55,9 +53,6 @@ public class FilmController {
             film.setId(getFilmId());
             filmList.put(film.getId(), film);
             log.info("Фильм добавлен");
-        } else {
-            log.warn("Ошибка валидации");
-            throw new ValidationException();
         }
         return film;
     }
@@ -68,11 +63,13 @@ public class FilmController {
         boolean minReleaseDate = film.getReleaseDate().isAfter(MIN_RELEASE_DATE);
         boolean isDurationPositive = film.getDuration() > 0;
         if (film.getId() < 0) {
-            return false;
+            log.warn("Ошибка валидации");
+            throw new IllegalIdException();
         } else if (checkName && maxCharDescription && minReleaseDate && isDurationPositive) {
             return true;
         } else {
-            return false;
+            log.warn("Ошибка валидации");
+            throw new ValidationException();
         }
     }
 }
