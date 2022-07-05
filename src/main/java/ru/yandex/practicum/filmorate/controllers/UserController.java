@@ -1,7 +1,10 @@
 package ru.yandex.practicum.filmorate.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.LocalDateTimeAdapter;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -15,6 +18,8 @@ public class UserController {
 
     Map<Integer, User> userList = new HashMap();
     int userId = 1;
+    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateTimeAdapter()).create();
+
 
     private int getUserId() {
         return userId++;
