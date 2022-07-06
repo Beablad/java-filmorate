@@ -20,7 +20,7 @@ public class FilmController {
     private final int MAX_CHAR_DESCRIPTION = 200;
     private final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     private int id = 1;
-    Map<Integer, Film> filmList = new HashMap<>();
+    private Map<Integer, Film> filmList = new HashMap<>();
 
     private int getFilmId() {
         return id++;

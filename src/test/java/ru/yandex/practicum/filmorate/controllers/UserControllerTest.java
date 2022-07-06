@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +7,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import ru.yandex.practicum.filmorate.LocalDateTimeAdapter;
+import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -26,7 +24,7 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateTimeAdapter()).create();
+    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
 
     @Test
     void addUser() throws Exception {
