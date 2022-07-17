@@ -1,12 +1,9 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.IllegalIdException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

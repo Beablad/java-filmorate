@@ -1,18 +1,11 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
-import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
-import ru.yandex.practicum.filmorate.exceptions.IllegalIdException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -20,9 +13,6 @@ import java.util.*;
 public class UserController {
 
     private final UserService userService;
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-            .excludeFieldsWithoutExposeAnnotation()
-            .create();
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -63,8 +53,8 @@ public class UserController {
         return userService.getCommonFriends(id, otherId);
     }
 
-    @GetMapping (value = "/{id}")
-    public User getUserById (@PathVariable int id) {
+    @GetMapping(value = "/{id}")
+    public User getUserById(@PathVariable int id) {
         return userService.userStorage.getUserById(id);
     }
 }

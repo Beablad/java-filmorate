@@ -1,15 +1,11 @@
 package ru.yandex.practicum.filmorate.service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
-import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
