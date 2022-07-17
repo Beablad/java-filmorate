@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,15 +40,8 @@ public class FilmService {
     }
 
     public List<Film> getMostLikesFilm(Optional<Integer> count) {
-        return filmStorage.getFilmList().stream().sorted((f1, f2) -> {
-                    if (f1.getLikeList().size() > f2.getLikeList().size()) {
-                        return 1;
-                    } else if (f1.getLikeList().size() < f2.getLikeList().size()) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                })
+        return filmStorage.getFilmList().stream()
+                .sorted(Comparator.comparingInt((Film film) -> film.getLikeList().size()).reversed())
                 .limit(count.orElse(10))
                 .collect(Collectors.toList());
     }

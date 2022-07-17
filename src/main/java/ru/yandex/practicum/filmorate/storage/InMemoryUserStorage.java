@@ -19,9 +19,6 @@ public class InMemoryUserStorage implements UserStorage {
 
     private Map<Integer, User> userList = new HashMap();
     private int userId = 1;
-    private Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-
-
 
     @Override
     public User addUser(User user) {
@@ -54,6 +51,15 @@ public class InMemoryUserStorage implements UserStorage {
         return new ArrayList<>(userList.values());
     }
 
+    @Override
+    public User getUserById (int userId) {
+        if (userId > 0){
+            return userList.get(userId);
+        } else {
+            throw new IllegalIdException();
+        }
+    }
+
     private boolean validate(User user) {
         boolean checkEmail = user.getEmail().contains("@") && !user.getEmail().isBlank();
         boolean checkBirthday = user.getBirthday().isBefore(LocalDate.now());
@@ -69,13 +75,5 @@ public class InMemoryUserStorage implements UserStorage {
 
     private int getUserId() {
         return userId++;
-    }
-
-    public User getUserById (int userId) {
-        if (userId > 0){
-            return userList.get(userId);
-        } else {
-            throw new IllegalIdException();
-        }
     }
 }

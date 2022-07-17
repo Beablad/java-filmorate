@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.google.gson.annotations.Expose;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -19,14 +20,13 @@ public class User {
     private String email;
     @NonNull
     private LocalDate birthday;
-    @NonNull
-    private HashSet<User> friendList;
+    private HashSet<Integer> friendList = new HashSet<>();
 
     public void addFriend(User user) {
-        friendList.add(user);
+        friendList.add(user.getId());
     }
 
     public void deleteFriend(User user) {
-        friendList.remove(user);
+        friendList.remove(user.getId());
     }
 }
