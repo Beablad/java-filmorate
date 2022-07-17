@@ -10,13 +10,13 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException (ValidationException e) {
+    public ErrorResponse handleValidationException (final ValidationException e) {
         return new ErrorResponse("Ошибка валидации");
     }
 
     @ExceptionHandler
     @ResponseStatus (value = HttpStatus.NOT_FOUND)
-    public ErrorResponse handleIllegalIdException (IllegalIdException e) {
+    public ErrorResponse handleIllegalIdException (final IllegalIdException e) {
         return new ErrorResponse("Идентификатор не может быть меньше 1");
     }
 }
