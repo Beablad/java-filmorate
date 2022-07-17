@@ -15,12 +15,7 @@ import java.util.*;
 @Slf4j
 public class FilmController {
 
-    FilmService filmService;
-    private final int MAX_CHAR_DESCRIPTION = 200;
-    private final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
-    private int id = 1;
-    private Map<Integer, Film> filmList = new HashMap<>();
-
+    private final FilmService filmService;
 
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
@@ -44,6 +39,11 @@ public class FilmController {
         return filmService.filmStorage.updateFilm(film);
     }
 
+    @DeleteMapping (value = "/{id}")
+    public Film deleteFilm (@PathVariable int id) {
+        return filmService.filmStorage.deleteFilm(id);
+    }
+
     @PutMapping(value = "/{id}/like/{userId}")
     public Film addLikeFilm(@PathVariable int id, @PathVariable int userId) {
         return filmService.addLike(id, userId);
@@ -55,12 +55,16 @@ public class FilmController {
     }
 
     @GetMapping(value = "/popular")
-    public List<Film> getPopularFilms(Optional<Integer> count) {
-        return filmService.getMostLikesFilm(count);
+    public List<Film> getPopularFilms(@RequestParam (required = false) Integer count) {
+        return filmService.getMostLikesFilm(Objects.requireNonNullElse(count, 10));
     }
 
     @GetMapping(value = "/{id}")
     public Film getFilmById(@PathVariable int id) {
-        return filmService.filmStorage.getFilmById(id);
+        if(id<0){
+            throw new IllegalIdException();
+        } else {
+            return filmService.filmStorage.getFilmById(id);
+        }
     }
 }

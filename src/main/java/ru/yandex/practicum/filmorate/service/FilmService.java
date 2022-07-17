@@ -39,10 +39,10 @@ public class FilmService {
         return film;
     }
 
-    public List<Film> getMostLikesFilm(Optional<Integer> count) {
+    public List<Film> getMostLikesFilm(int count) {
         return filmStorage.getFilmList().stream()
                 .sorted(Comparator.comparingInt((Film film) -> film.getLikeList().size()).reversed())
-                .limit(count.orElse(10))
+                .limit(count)
                 .collect(Collectors.toList());
     }
 }

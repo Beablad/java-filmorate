@@ -48,7 +48,9 @@ class FilmControllerTest {
 
     @Test
     void addFilmWithLongDescription() throws Exception {
-        String longDescription = "asdl;adkjsal;fjsdfl;kasjdflakdswjf;lakdsjfalkadjfla;ksdjfla;skdjfalskdjfalkdjfalskdfjasldkfjalsdkfjasldkfjlkn lkajvns;lkadfnklfjdvn;slakdvnakljfnaskld;jfnkljfvnaskl;djfnasldkjvnklsa;djnvsdkla;jfnk;jcsnvk;xcjnkl;jzsndfk;jxcnvkl;xznvlzk;nvasd;kljnvkxcnvxz";
+        String longDescription = "asdl;adkjsal;fjsdfl;kasjdflakdswjf;lakdsjfalkadjfla;ksdjfla;skdjfalskdjfalkdjfalsk" +
+                "dfjasldkfjalsdkfjasldkfjlkn lkajvns;lkadfnklfjdvn;slakdvnakljfnaskld;jfnkljfvnaskl;djfnasldkjvnklsa" +
+                ";djnvsdkla;jfnk;jcsnvk;xcjnkl;jzsndfk;jxcnvkl;xznvlzk;nvasd;kljnvkxcnvxz";
         Film film = new Film("film", longDescription, LocalDate.EPOCH, 120);
         mockMvc.perform(post("/films")
                         .content(gson.toJson(film))

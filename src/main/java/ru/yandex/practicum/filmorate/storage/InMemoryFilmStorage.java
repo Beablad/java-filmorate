@@ -33,15 +33,15 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film deleteFilm(Film film) {
-        log.info("Фильм удален: " + film);
-        filmList.remove(film.getId());
-        return film;
+    public Film deleteFilm(int id) {
+        log.info("Фильм удален: " + getFilmById(id));
+        filmList.remove(id);
+        return getFilmById(id);
     }
 
     @Override
     public Film updateFilm(Film film) {
-        if (validate(film)){
+        if (validate(film)) {
             filmList.put(film.getId(), film);
         }
         log.info("Фильм добавлен/обновлен: " + film);
@@ -55,11 +55,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film getFilmById(int id) {
-        if (id>0){
-            return filmList.get(id);
-        } else {
-            throw new IllegalIdException();
-        }
+        return filmList.get(id);
     }
 
     private int getNextFilmId() {

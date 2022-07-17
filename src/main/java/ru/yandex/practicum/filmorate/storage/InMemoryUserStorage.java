@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.IllegalIdException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class InMemoryUserStorage implements UserStorage {
 
@@ -25,20 +27,23 @@ public class InMemoryUserStorage implements UserStorage {
             }
             user.setId(getUserId());
             userList.put(user.getId(), user);
+            log.info("Пользователь добавлен.");
         }
         return user;
     }
 
     @Override
-    public User deleteUser(User user) {
-        userList.remove(user.getId());
-        return user;
+    public User deleteUser(int id) {
+        userList.remove(getUserById(id).getId());
+        log.info("Пользователь удален.");
+        return getUserById(id);
     }
 
     @Override
     public User updateUser(User user) {
         if (validate(user)){
             userList.put(user.getId(), user);
+            log.info("Пользователь добавлен/обновлен.");
         }
         return user;
     }
