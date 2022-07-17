@@ -26,7 +26,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
 
-    @Test
+    /*@Test
     void addUser() throws Exception {
         User user = new User("a", "b", "email@mail.ru", LocalDate.of(2000, 7, 1));
         mockMvc.perform(post("/users")
@@ -85,5 +85,5 @@ class UserControllerTest {
         user.setId(1);
         mockMvc.perform(post("/users").content(gson.toJson(user)).contentType(MediaType.APPLICATION_JSON));
         mockMvc.perform(get("/users")).andExpect(status().isOk());
-    }
+    }*/
 }

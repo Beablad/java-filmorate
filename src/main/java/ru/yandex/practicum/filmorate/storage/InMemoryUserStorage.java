@@ -1,0 +1,81 @@
+package ru.yandex.practicum.filmorate.storage;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exceptions.IllegalIdException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
+public class InMemoryUserStorage implements UserStorage {
+
+    private Map<Integer, User> userList = new HashMap();
+    private int userId = 1;
+    private Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+
+
+
+    @Override
+    public User addUser(User user) {
+        if (validate(user)) {
+            if (user.getName().isBlank()) {
+                user.setName(user.getLogin());
+            }
+            user.setId(getUserId());
+            userList.put(user.getId(), user);
+        }
+        return user;
+    }
+
+    @Override
+    public User deleteUser(User user) {
+        userList.remove(user.getId());
+        return user;
+    }
+
+    @Override
+    public User updateUser(User user) {
+        if (validate(user)){
+            userList.put(user.getId(), user);
+        }
+        return user;
+    }
+
+    @Override
+    public List<User> getUserList() {
+        return new ArrayList<>(userList.values());
+    }
+
+    private boolean validate(User user) {
+        boolean checkEmail = user.getEmail().contains("@") && !user.getEmail().isBlank();
+        boolean checkBirthday = user.getBirthday().isBefore(LocalDate.now());
+        boolean checkLogin = !user.getLogin().contains(" ") && !user.getLogin().isBlank();
+        if (user.getId() < 0) {
+            throw new IllegalIdException();
+        } else if (checkEmail && checkBirthday && checkLogin) {
+            return true;
+        } else {
+            throw new ValidationException();
+        }
+    }
+
+    private int getUserId() {
+        return userId++;
+    }
+
+    public User getUserById (int userId) {
+        if (userId > 0){
+            return userList.get(userId);
+        } else {
+            throw new IllegalIdException();
+        }
+    }
+}

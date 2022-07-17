@@ -21,7 +21,7 @@ class FilmControllerTest {
     MockMvc mockMvc;
     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
 
-    @Test
+    /*@Test
     void addFilm() throws Exception {
         Film film = new Film("film", "descr", LocalDate.EPOCH, 120);
         mockMvc.perform(post("/films")
@@ -79,5 +79,5 @@ class FilmControllerTest {
                 .content(gson.toJson(film))
                 .contentType(MediaType.APPLICATION_JSON));
         mockMvc.perform(get("/films")).andExpect(status().isOk());
-    }
+    }*/
 }
