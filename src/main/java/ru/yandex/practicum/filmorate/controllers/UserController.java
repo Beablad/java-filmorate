@@ -1,77 +1,66 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.util.LocalDateAdapter;
-import ru.yandex.practicum.filmorate.exceptions.IllegalIdException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
 
-    private Map<Integer, User> userList = new HashMap();
-    private int userId = 1;
-    private Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+    private final UserService userService;
 
-
-    private int getUserId() {
-        return userId++;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public List<User> getUserList() {
-        log.info("Получен GET запрос");
-        return new ArrayList<>(userList.values());
+        return userService.userStorage.getUserList();
     }
 
     @PostMapping
     public User addUser(@RequestBody User user) {
-        log.info("Получен POST запрос");
-        if (validate(user)) {
-            if (user.getName().isBlank()) {
-                user.setName(user.getLogin());
-            }
-            user.setId(getUserId());
-            userList.put(user.getId(), user);
-            log.info("Пользователь добавлен");
-        }
-        return user;
+        return userService.userStorage.addUser(user);
     }
 
     @PutMapping
     public User updateOrAddUser(@RequestBody User user) {
-        log.info("Получен PUT запрос");
-        if (userList.get(user.getId()) != null && validate(user)) {
-            userList.put(user.getId(), user);
-            log.info("Пользователь обновлен");
-        } else if (validate(user)) {
-            userList.put(user.getId(), user);
-            log.info("Пользователь добавлен");
-        }
-        return user;
+        return userService.userStorage.updateUser(user);
     }
 
-    private boolean validate(User user) {
-        boolean checkEmail = user.getEmail().contains("@") && !user.getEmail().isBlank();
-        boolean checkBirthday = user.getBirthday().isBefore(LocalDate.now());
-        boolean checkLogin = !user.getLogin().contains(" ") && !user.getLogin().isBlank();
-        if (user.getId() < 0) {
-            log.warn("Ошибка валидации");
-            throw new IllegalIdException();
-        } else if (checkEmail && checkBirthday && checkLogin) {
-            return true;
-        } else {
-            log.warn("Ошибка валидации");
-            throw new ValidationException();
-        }
+    @DeleteMapping (value = "/{id}")
+    public User deleteUser (@PathVariable int id)  {
+        return userService.userStorage.deleteUser(id);
+    }
+
+    @PutMapping(value = "/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping(value = "/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.deleteFriend(id, friendId);
+    }
+
+    @GetMapping(value = "/{id}/friends")
+    public List<User> getAllFriends(@PathVariable int id) {
+        return userService.getFriendsListOfUser(id);
+    }
+
+    @GetMapping(value = "/{id}/friends/common/{otherId}")
+    public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.getCommonFriends(id, otherId);
+    }
+
+    @GetMapping(value = "/{id}")
+    public User getUserById(@PathVariable int id) {
+        return userService.userStorage.getUserById(id);
     }
 }
 
