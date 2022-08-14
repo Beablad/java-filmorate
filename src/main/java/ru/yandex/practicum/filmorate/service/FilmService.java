@@ -49,6 +49,7 @@ public class FilmService {
     }
 
     public List<Film> getMostLikesFilm(int count) {
+        List<Film> films = filmStorage.getFilmList();
         return filmStorage.getFilmList().stream()
                 .sorted(Comparator.comparingInt((Film film) -> film.getLikeList().size()).reversed())
                 .limit(count)

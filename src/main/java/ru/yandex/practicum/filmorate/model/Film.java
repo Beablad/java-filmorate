@@ -6,7 +6,9 @@ import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class Film {
@@ -20,10 +22,10 @@ public class Film {
     private LocalDate releaseDate;
     @NonNull
     private long duration;
-    private List<Genre> genres;
+    private LinkedHashSet<Genre> genres;
     private MpaRating mpa;
 
-    public Film(@NonNull String name, @NonNull String description, @NonNull LocalDate releaseDate, @NonNull long duration, List<Genre> genres, MpaRating mpa) {
+    public Film(@NonNull String name, @NonNull String description, @NonNull LocalDate releaseDate, @NonNull long duration, LinkedHashSet<Genre> genres, MpaRating mpa) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;

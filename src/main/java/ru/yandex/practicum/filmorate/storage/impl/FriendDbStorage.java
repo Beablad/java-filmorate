@@ -39,7 +39,7 @@ public class FriendDbStorage implements FriendStorage {
 
     @Override
         public List<User> getCommonFriends(int userId, int friendId) {
-        String sql = "SELECT user_id, email, login, name, birthday"
+        String sql = "SELECT u.*"
                 + " FROM users AS u"
                 + " WHERE u.user_id IN ("
                 + "   SELECT friend_id AS user_id FROM friendship WHERE user_id = ?"
@@ -60,9 +60,7 @@ public class FriendDbStorage implements FriendStorage {
                 + " FROM users AS u"
                 + " WHERE u.user_id IN ("
                 + "   SELECT friend_id AS user_id FROM friendship WHERE user_id = ?"
-                + "   UNION"
-                + "   SELECT user_id AS user_id FROM friendship WHERE friend_id = ?"
                 + " )";
-        return jdbcTemplate.query(sql, userDbStorage::mapToRowUser, userId, userId);
+        return jdbcTemplate.query(sql, userDbStorage::mapToRowUser, userId);
     }
 }

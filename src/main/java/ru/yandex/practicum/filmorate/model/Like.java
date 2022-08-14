@@ -6,6 +6,9 @@ import lombok.NonNull;
 @Data
 public class Like {
 
+
+    @NonNull
+    private long id;
     @NonNull
     private long filmId;
     @NonNull

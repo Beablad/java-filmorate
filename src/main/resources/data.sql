@@ -8,6 +8,8 @@ merge into MPA_RATING (MPA_RATING_ID, MPA_RATING_NAME)
 values ( 4, 'R' );
 merge into MPA_RATING (MPA_RATING_ID, MPA_RATING_NAME)
 values ( 5 , 'NC-17');
+merge into MPA_RATING (MPA_RATING_ID, MPA_RATING_NAME)
+values ( 6 , 'Не указан');
 
 merge into GENRE (GENRE_ID, GENRE_NAME)
 values ( 1, 'Комедия' );
