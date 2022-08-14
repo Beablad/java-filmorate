@@ -19,7 +19,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     private final int MAX_CHAR_DESCRIPTION = 200;
     private final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     private int id = 1;
-    private Map<Integer, Film> filmList = new HashMap<>();
+    private Map<Long, Film> filmList = new HashMap<>();
 
 
     @Override
@@ -33,10 +33,9 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film deleteFilm(int id) {
+    public void deleteFilm(int id) {
         log.info("Фильм удален: " + getFilmById(id));
         filmList.remove(id);
-        return getFilmById(id);
     }
 
     @Override

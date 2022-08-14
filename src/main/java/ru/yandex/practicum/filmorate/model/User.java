@@ -20,13 +20,18 @@ public class User {
     private String email;
     @NonNull
     private LocalDate birthday;
-    private HashSet<Integer> friendList = new HashSet<>();
+    private HashSet<Friendship> friendList = new HashSet<>();
 
-    public void addFriend(User user) {
-        friendList.add(user.getId());
+    public void addFriend(Friendship friendship) {
+        friendList.add(friendship);
     }
 
-    public void deleteFriend(User user) {
-        friendList.remove(user.getId());
+    public void deleteFriend(int friendId) {
+        for (Friendship friendship: friendList){
+            if (friendship.getFriendId() == friendId){
+                friendList.remove(friendship);
+                break;
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ public interface FilmStorage {
 
     Film addFilm(Film film);
 
-    Film deleteFilm(int id);
+    void deleteFilm(int id);
 
     Film updateFilm(Film film);
 

@@ -1,10 +1,14 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Like;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.LikeStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Comparator;
@@ -14,29 +18,34 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class FilmService {
 
-    public final FilmStorage filmStorage;
-    public final UserStorage userStorage;
+    private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
+    private final LikeStorage likeStorage;
 
-    @Autowired
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
-        this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
+
+    public Film addFilm(Film film) {
+        log.info("Получен POST запрос");
+        return filmStorage.addFilm(film);
     }
 
-    public Film addLike(int filmId, int userId) {
-        Film film = filmStorage.getFilmById(filmId);
-        film.addLike(userStorage.getUserById(userId));
-        log.info("Добавлен лайку фильму " + film);
+    public Film updateFilm(Film film) {
+        filmStorage.updateFilm(film);
         return film;
     }
 
-    public Film deleteLike(int filmId, int userId) {
-        Film film = filmStorage.getFilmById(filmId);
-        film.deleteLike(userStorage.getUserById(userId));
-        log.info("Удален лайк у фильма " + film);
-        return film;
+    public void deleteFilm(int id) {
+        filmStorage.deleteFilm(id);
+    }
+
+    public void addLike(int filmId, int userId) {
+        likeStorage.addLike(filmId, userId);
+    }
+
+    public void deleteLike(int filmId, int userId) {
+        likeStorage.deleteLike(filmId, userId);
     }
 
     public List<Film> getMostLikesFilm(int count) {
@@ -44,5 +53,13 @@ public class FilmService {
                 .sorted(Comparator.comparingInt((Film film) -> film.getLikeList().size()).reversed())
                 .limit(count)
                 .collect(Collectors.toList());
+    }
+
+    public Film getFilmById(int id) {
+        return filmStorage.getFilmById(id);
+    }
+
+    public List<Film> getFilmList() {
+        return filmStorage.getFilmList();
     }
 }

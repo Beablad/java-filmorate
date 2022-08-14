@@ -5,13 +5,13 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 @Data
 public class Film {
 
-    private int id;
+    private long id;
     @NonNull
     private String name;
     @NonNull
@@ -20,10 +20,22 @@ public class Film {
     private LocalDate releaseDate;
     @NonNull
     private long duration;
-    private HashSet<User> likeList = new HashSet<>();
+    private List<Genre> genres;
+    private MpaRating mpa;
 
-    public void addLike(User user) {
-        likeList.add(user);
+    public Film(@NonNull String name, @NonNull String description, @NonNull LocalDate releaseDate, @NonNull long duration, List<Genre> genres, MpaRating mpa) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.genres = genres;
+        this.mpa = mpa;
+    }
+
+    private HashSet<Like> likeList = new HashSet<>();
+
+    public void addLike(Like like) {
+        likeList.add(like);
     }
 
     public void deleteLike(User user) {
