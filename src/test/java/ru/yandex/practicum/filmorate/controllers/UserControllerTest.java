@@ -1,3 +1,4 @@
+/*
 package ru.yandex.practicum.filmorate.controllers;
 
 import com.google.gson.GsonBuilder;
@@ -93,4 +94,4 @@ class UserControllerTest {
         mockMvc.perform(post("/users").content(gson.toJson(user)).contentType(MediaType.APPLICATION_JSON));
         mockMvc.perform(get("/users")).andExpect(status().isOk());
     }
-}
+}*/

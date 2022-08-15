@@ -17,6 +17,7 @@ public class FilmController {
 
     private final FilmService filmService;
 
+
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
@@ -24,47 +25,53 @@ public class FilmController {
     @GetMapping
     public List<Film> getFilmList() {
         log.info("Получен GET запрос");
-        return filmService.filmStorage.getFilmList();
+        return filmService.getFilmList();
     }
 
     @PostMapping
     public Film addFilm(@RequestBody Film film) {
         log.info("Получен POST запрос");
-        return filmService.filmStorage.addFilm(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping
     public Film updateOrAddFilm(@RequestBody Film film) {
         log.info("Получен PUT запрос");
-        return filmService.filmStorage.updateFilm(film);
+        return filmService.updateFilm(film);
     }
 
-    @DeleteMapping (value = "/{id}")
-    public Film deleteFilm (@PathVariable int id) {
-        return filmService.filmStorage.deleteFilm(id);
+    @DeleteMapping(value = "/{id}")
+    public Film deleteFilm(@PathVariable int id) {
+        Film film = filmService.getFilmById(id);
+        filmService.deleteFilm(id);
+        return film;
     }
 
     @PutMapping(value = "/{id}/like/{userId}")
     public Film addLikeFilm(@PathVariable int id, @PathVariable int userId) {
-        return filmService.addLike(id, userId);
+        Film film = filmService.getFilmById(id);
+        filmService.addLike(id, userId);
+        return film;
     }
 
     @DeleteMapping(value = "/{id}/like/{userId}")
     public Film deleteLikeFilm(@PathVariable int id, @PathVariable int userId) {
-        return filmService.deleteLike(id, userId);
+        Film film = filmService.getFilmById(id);
+        filmService.deleteLike(id, userId);
+        return film;
     }
 
     @GetMapping(value = "/popular")
-    public List<Film> getPopularFilms(@RequestParam (required = false) Integer count) {
+    public List<Film> getPopularFilms(@RequestParam(required = false) Integer count) {
         return filmService.getMostLikesFilm(Objects.requireNonNullElse(count, 10));
     }
 
     @GetMapping(value = "/{id}")
     public Film getFilmById(@PathVariable int id) {
-        if(id<0){
+        if (id < 0) {
             throw new IllegalIdException();
         } else {
-            return filmService.filmStorage.getFilmById(id);
+            return filmService.getFilmById(id);
         }
     }
 }
