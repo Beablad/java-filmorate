@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GenreService {
 
-    GenreDb genreDb;
+    private final GenreDb genreDb;
 
     public List<Genre> getGenres () {
         return genreDb.getGenres();

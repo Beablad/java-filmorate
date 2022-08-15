@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MpaService {
 
-    MpaRatingDb mpaRatingDb;
+    private final MpaRatingDb mpaRatingDb;
 
     public List<MpaRating> getMpaList() {
         return mpaRatingDb.getMpaList();

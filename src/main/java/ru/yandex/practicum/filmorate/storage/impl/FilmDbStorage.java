@@ -36,18 +36,22 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film addFilm(Film film) {
         if (validate(film)) {
-            String sql = "INSERT INTO FILMS (NAME, DESCRIPTION, RELEASE_DATE, DURATION, MPA_RATING_ID) " +
-                    "VALUES ( ?, ?, ?, ? , ?) ";
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbcTemplate.update(connection -> {
-                PreparedStatement stmt = connection.prepareStatement(sql, new String[]{"film_id"});
-                stmt.setString(1, film.getName());
-                stmt.setString(2, film.getDescription());
-                stmt.setDate(3, Date.valueOf(film.getReleaseDate()));
-                stmt.setLong(4, film.getDuration());
-                stmt.setLong(5, film.getMpa().getId());
-                return stmt;
-            }, keyHolder);
+            if (film.getMpa() == null){
+                throw new ValidationException();
+            } else {
+                String sql = "INSERT INTO FILMS (NAME, DESCRIPTION, RELEASE_DATE, DURATION, MPA_RATING_ID) " +
+                        "VALUES ( ?, ?, ?, ? , ?) ";
+                jdbcTemplate.update(connection -> {
+                    PreparedStatement stmt = connection.prepareStatement(sql, new String[]{"film_id"});
+                    stmt.setString(1, film.getName());
+                    stmt.setString(2, film.getDescription());
+                    stmt.setDate(3, Date.valueOf(film.getReleaseDate()));
+                    stmt.setLong(4, film.getDuration());
+                    stmt.setLong(5, film.getMpa().getId());
+                    return stmt;
+                }, keyHolder);
+            }
             film.setId(keyHolder.getKey().intValue());
             addGenresToFilm(film);
             return film;
@@ -113,7 +117,7 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
-    Film mapToRowFilm(ResultSet rs, int rowNum) throws SQLException {
+    private Film mapToRowFilm(ResultSet rs, int rowNum) throws SQLException {
         String sql = "SELECT * FROM FILM_GENRE WHERE FILM_ID = ?";
         MpaRating mpa = mpaRatingDb.getMpaById(rs.getLong("mpa_rating_id"));
         Film film = new Film(rs.getString("name"),
@@ -137,7 +141,7 @@ public class FilmDbStorage implements FilmStorage {
         return addLikeToFilm(film);
     }
 
-    Genre mapToRowGenre(ResultSet rs, int rowNum) throws SQLException {
+    private Genre mapToRowGenre(ResultSet rs, int rowNum) throws SQLException {
         /*String sql = "SELECT * FROM GENRE WHERE GENRE_ID = ?";
         jdbcTemplate.queryForRowSet(sql, rs.getInt("GENRE_ID"))*/
         return Genre.builder()

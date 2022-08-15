@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping ("/mpa")
 public class MpaController {
 
-    MpaService mpaService;
+    private final MpaService mpaService;
 
     @GetMapping
     public List<MpaRating> getMpaList () {

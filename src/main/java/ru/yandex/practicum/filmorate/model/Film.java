@@ -23,6 +23,7 @@ public class Film {
     @NonNull
     private long duration;
     private LinkedHashSet<Genre> genres;
+    @NonNull
     private MpaRating mpa;
 
     public Film(@NonNull String name, @NonNull String description, @NonNull LocalDate releaseDate, @NonNull long duration, LinkedHashSet<Genre> genres, MpaRating mpa) {

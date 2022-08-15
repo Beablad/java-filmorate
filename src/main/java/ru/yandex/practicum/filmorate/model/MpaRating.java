@@ -7,6 +7,7 @@ import lombok.NonNull;
 @Builder
 public class MpaRating {
 
+    @NonNull
     private long id;
     private String name;
 }

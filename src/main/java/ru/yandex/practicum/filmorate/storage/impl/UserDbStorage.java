@@ -29,7 +29,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDbStorage implements UserStorage {
 
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public User addUser(User user) {
